@@ -1,0 +1,100 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>除了闹过腥风血雨的fastjson，你还知道哪些Java解析JSON的利器？</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="~/css/style.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript" src="~/js/cufon-yui.js"></script>
+    <script type="text/javascript" src="~/js/arial.js"></script>
+    <script type="text/javascript" src="~/js/cuf_run.js"></script>
+    <script type="text/javascript" src="~/js/jquery-1.3.2.min.js"></script>
+    <script type="text/javascript" src="~/js/radius.js"></script>
+    <!-- CuFon ends -->
+</head>
+<body>
+    <div class="main">
+
+        <div class="header">
+            <div class="header_resize">
+                <div class="logo"><h1><a href="index.html">HeXiaoDong.top</a></h1></div>
+                <div class="menu_nav">
+                    <ul>
+                        <li><a href="@Url.Action("Index")">首页</a></li>
+                        <li><a href="@Url.Action("Blog",new { id=1})">最新博客</a></li>
+                        <li><a href="@Url.Action("Contact")">联系我</a></li>
+                    </ul>
+                </div>
+                <div class="clr"></div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="content_resize">
+                <div class="mainbar">
+                    <div class="article">
+                        <h2><span>除了闹过腥风血雨的fastjson，你还知道哪些Java解析JSON的利器？</span></h2><div class="clr"></div>
+                        <p></p><p>既要低头赶路，又要抬头望天，科技是为人服务的，任何技术背后都有更深层次的考量，在本系列的第一篇文章中我们聊了微服务的本质，它是一种可以加速分工、促进合作的新协作机制。知其然，知其所以然，在第二篇文章中我们剖析了微服务为什么可以加速分工、促进合作，今天我们再接着来聊聊怎样开启微服务架构之旅。</p>
+                        <ul>
+                            <li><a href="https://www.cnblogs.com/itlaobingge/p/12191312.html" target="_blank">微服务到底改变了什么，你知道吗？</a></li>
+                            <li><a href="https://www.cnblogs.com/itlaobingge/p/12195492.html" target="_blank">微服务，为什么可以加速分工、促进合作？</a></li>
+                        </ul>
+                        <p><span style="font-size: 18px;"><strong>1. 从前后端分离开启微服务改造</strong></span></p>
+                        <p>现在我们对微服务有了更深入的了解，也准备在构建新系统时采用这套新架构了，但它还是有些复杂度的，包括服务注册中心、统一配置中心、微服务网关、接入层网关、服务治理中心、调用链路追踪、分布式事务和分布式调度等众多组件。一口吃成胖子仅仅是一个美好的愿望，从单体式架构直接升级至全微服务架构，需要掌握这套全新的技术栈，对于缺乏前期铺垫的团队来说，学习曲线还是比较陡的，真正遇到的挑战往往超出想象的。</p>
+                        <p>心理学对此有专门的研究，我们探索陌生世界的动力源于兴趣，而兴趣就是好奇心和正向反馈。如果我们刚开始就把目标设定的太高太远，在坚持努力了一段时间之后，还无法达成目标的话，那我们就接收不到正向反馈。久而久之，好奇心就会消磨殆尽，兴趣也就随之消失了。最靠谱的方式就是段带式进阶，将一个非常宏大的目标拆解成多个阶段性目标。在当前能力水平下，最近的阶段性目标只需要我们稍作努力跳跳脚就可以完成的，这样我们就能持续地收获小糖豆，从而激发更大好奇心和更强的战斗力，一步一台阶地顺利抵达最初设定的大目标。</p>
+                        <p>因此，我推荐从难度较小的前后端分离来启动微服务化改造。那为什么前后端分离适合作为切入点呢？这源于对大量用户案例的分析和总结，接下来我们一起看看这当中蕴含的逻辑。通常，我们可以按照下面三种规则将单体式拆解成微服务：</p>
+                        <ul>
+                            <li>按业务类型分，每个组件负责不同的业务，彼此之间松耦合。</li>
+                            <li>按技术类型分，某些特性只能采用特定的语言或框架来实现。</li>
+                            <li>按地域边界分，研发团队分布在不同地方，受沟通成本限制。</li>
+                        </ul>
+                        <p><img style="display: block; margin-left: auto; margin-right: auto;" src="https://img2018.cnblogs.com/common/1876334/202001/1876334-20200116110814689-1952664382.png" alt="" width="515" height="341" /></p>
+                        <p>按照上述规则看，前后端是否适合拆成两个组件呢？从整体感觉看，前端就像要接待客户的岗位，必须把自己收拾的干干净净，给客户留下好印象，而后端就像后援岗位的程序员，日常主要跟机器打交道，怎么舒服怎么穿。从功能定位看，前端担负人机交互，关注业务流程，后端负责算法数据，关注运算逻辑。从质量属性看，前端看重易用性、美观度等，后端看重扩展性、可用性和性能等。从资源需求看，前端主要消耗内存和带宽，后端主要消耗CPU。从迭代频次看，前端需要不断试错，变化要远高于后端。从技能要求看，前端主攻HTML/CSS/JS等，研究怎样跟人交互更高效顺畅，后端主攻高级编程语言等，研究怎样跟机器打交道更高效稳定。</p>
+                        <p><img style="display: block; margin-left: auto; margin-right: auto;" src="https://img2018.cnblogs.com/common/1876334/202001/1876334-20200116110842939-1454116080.png" alt="" width="498" height="366" /></p>
+                        <p>按上述分析看，前后端是非常适合拆开的。在云计算时代到来之前，即移动互联网时代，为了跨终端，前后端分离就已经开始流行了，应该说有比较成熟的用户基础了。同时，从前后端分离架构的逻辑、过程等视图看，这套方案相对简单，容易上手，非常适合作为微服务化改造的第一步。在此方案中，我们只需要引入接入层网关和开发框架（SpringBoot），前者用于承载前端组件，后者降低开发难度。接入层网关,通常以Nginx、OpenRestry、Kong等开源中间件为基础扩展，支持从服务治理平台接收控制指令，实现前端热发布和页面级灰度。另外，利用中间件本身的插件机制来实现业务需求定制。</p>
+                        <p><img style="display: block; margin-left: auto; margin-right: auto;" src="https://img2018.cnblogs.com/common/1876334/202001/1876334-20200116110929229-175513287.png" alt="" width="619" height="383" /></p>
+                        <ul>
+                            <li>前端组件可以采用React、Vue等框架开发，发布时将HTML/CSS/JS等静态资源打成ZIP包。</li>
+                            <li>后端组件将服务封装成HTTP RESTful API，发布时打成特定的压缩包，例如：FatJAR、WAR等。</li>
+                            <li>前端以AJAX方式调用后端服务，报文采用JSON格式编码。</li>
+                            <li>接入层网关会对客户端（浏览器）的请求做路由转发，静态资源请求在本地处理，动态服务请求转给后端。</li>
+                        </ul>
+                        <p><span style="font-size: 18px;"><strong>2. 分步骤演进至全微服务架构</strong></span></p>
+                        <p>俗话说万事开头难，将前后端分离作为切入点，我们可以轻松地开启微服务化改造之旅。接下来，我们如何一步步趋近至全微服务架构呢？以JAVA领域为例，如下图所示，典型的微服务架构主要包含下列组件：</p>
+                        <ul>
+                            <li>接入层网关，负责将流量落地并对其进行安全检测，然后分流静态和动态请求。另外，前端组件的静态资源会部署在它里面。常见的开源产品有：Nginx、OpenRestry、Kong等。</li>
+                            <li>应用开发框架，用于搭建应用的骨架，例如：Spring Boot。历经十五年左右的发展，Spring已经进化至5.x版本，在功能越来越强大的同时也变得越来越复杂，Spring Boot以“习惯优于配置”的理念对Spring做了封装简化，这样新用户就不需要硬磕十几年的技术沉淀，降低使用门槛高更容易上手。</li>
+                            <li>微服务网关，负责将请求路由至后端的微服务，客户端不用关心后台具体由哪些微服务构成。另外，它还可以帮后端实现一些通用的横切面功能，例如：身份认证、操作鉴权、请求校验、安全检测、灰度发布、流量管控等。常见的开源产品有：Netflix Zuul、Spring Cloud Gateway等。</li>
+                            <li>服务注册中心，负责汇聚后端微服务的实例地址、状态等信息，以便微服务网关或消费方查询服务信息。有了它的协助，微服务就可以越拆越小，弹性伸缩也可以变得自动化。常见的开源产品有：Eureka、Nacos、Consul等。</li>
+                            <li>统一配置中心，负责管理每个微服务在不同环境、集群中的动态配置，配置更新后可以实时地推送至对应微服务实例上，并及时生效。它可以简化大规模分布式系统配置的管理维护。常见的开源产品有：Spring Cloud Config、Appollo等。</li>
+                        </ul>
+                        <p style="text-align: center;"><img src="https://img2018.cnblogs.com/common/1876334/202001/1876334-20200116111031874-717074947.png" alt="" width="681" height="461" /></p>
+                        <p>通常，每个微服务都存在身份认证、操作鉴权、请求校验、安全检测、灰度发布、流量管控等需求，这些属于横切面或通用功能，非常适合在微服务网关上实现，这样就不需要每个微服务重复实现上述功能了。像Netflix Zuul、Spring Cloud Gateway等开源中间件，它们都支持过滤器Filter模式，我们可以基于此来扩展定制各种横切面或通用功能，让后端组件专注于业务，通过架构升级进一步细化分工和加强合作。</p>
+                        <p>在前后端分离的基础上，我们不断迭代、试错和演进，逐步找到了用户欢迎的业务形态，用户量开始不断增长。接着，我们就会进一步丰富业务，这时候后端组件也需要拆解成多个微服务组件了。为了支持后端多个微服务组件，我们就需要引进服务注册中心，支持服务的动态注册与发现。在统一配置中心、服务治理平台、调用链路追踪、日志监控等辅助系统协助之下，整个系统就演进至较完整的微服务架构了。至此，我们就可以实现服务治理、灰度发布等高级特性了。再往后我们就需要根据业务类型来决定是否引入分布式事务、分布式调度等解决方案了。</p>
+                        <p style="text-align: center;"><img src="https://img2018.cnblogs.com/common/1876334/202001/1876334-20200116111101326-17976733.png" alt="" width="638" height="400" /></p>
+                        <p>微服务倡导专业分工，每个组件都专注于各自的业务领域；微服务倡导精益创业，通过最小化可行产品（MVP）不断验证市场；微服务倡导敏捷迭代，通过灰度发布在线滚动升级系统。同样，我们在引进微服务架构时也建议遵循上述原则，从实际需求出发，逐步演进至全套微服务架构，没有必要一次性采用全部套件。为了降低采用新技术栈时的风险，我们可以从边缘系统开始微服务改造，等团队对新技术掌握的更好之后再开始改造核心系统。</p>
+                        <p>坚持原创不易，如果你觉得有价值，麻烦动动手指点下文 「&nbsp;<span style="color: #ff0000;"><strong>推荐</strong></span>&nbsp;」按钮，让更多小伙伴可以看到，老兵哥会更有动力坚持分享的。另外，我后续还会分享职业规划、应聘面试、技能提升、影响力打造等经验，欢迎&nbsp;<span style="color: #ff0000;"><strong>关注&nbsp;</strong></span>本专栏或微信公众号 「<span style="color: #ff0000;">&nbsp;</span><strong><span style="color: #ff0000;">IT老兵哥</span>&nbsp;」</strong>！</p>
+                    </div>
+                </div>
+                <div class="clr"></div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="footer_resize">
+                <p class="lf">&copy; Copyright <a href="#">晓冬科技</a>. Collect from: <a href="http://www.hexiaodong.top/" title="" target="_blank">www.hexiaodong.top</a></p>
+                <ul class="fmenu">
+                    <li><a href="@Url.Action("Index")">首页</a></li>
+                    <li><a href="@Url.Action("Blog")">博客</a></li>
+                    <li><a href="@Url.Action("Contact")">联系我</a></li>
+                </ul>
+                <div class="clr"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

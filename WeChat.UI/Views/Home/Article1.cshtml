@@ -1,0 +1,289 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>深入理解 CSS（Cascading Style Sheets）中的层叠（Cascading）</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="~/css/style.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript" src="~/js/cufon-yui.js"></script>
+    <script type="text/javascript" src="~/js/arial.js"></script>
+    <script type="text/javascript" src="~/js/cuf_run.js"></script>
+    <script type="text/javascript" src="~/js/jquery-1.3.2.min.js"></script>
+    <script type="text/javascript" src="~/js/radius.js"></script>
+    <!-- CuFon ends -->
+</head>
+<body>
+    <div class="main">
+
+        <div class="header">
+            <div class="header_resize">
+                <div class="logo"><h1><a href="index.html">HeXiaoDong.top</a></h1></div>
+                <div class="menu_nav">
+                    <ul>
+                        <li><a href="@Url.Action("Index")">首页</a></li>
+                        @*<li><a href="@Url.Action("Support")">支持</a></li>
+                        <li class="active"><a href="@Url.Action("About")">关于我</a></li>*@
+                    <li><a href="@Url.Action("Blog",new { id=1})">最新博客</a></li>
+                        <li><a href="@Url.Action("Contact")">联系我</a></li>
+                    </ul>
+                </div>
+                <div class="clr"></div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="content_resize">
+                <div class="mainbar">
+                    <div class="article">
+                        <h2><span>深入理解 CSS（Cascading Style Sheets）中的层叠（Cascading）</span></h2><div class="clr"></div>
+                        <p><strong>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget bibendum tellus. Nunc vel imperdiet tellus. Mauris ornare aliquam urna, accumsan bibendum eros auctor ac.</strong></p>
+                        <p> </p><p><span style="font-size: 14px; font-family: verdana, geneva;">标题中的 Cascading 亦可以理解为级联。</span></p>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">进入正文，这是一个很有意思的现象。可以直接跳到&nbsp;总结一下&nbsp;部分，看完再回过头来阅读本文。</span></p>
+                        <p><span style="font-size: 12px; font-family: verdana, geneva;">&nbsp;</span></p>
+                        <h2><span style="font-size: 18pt; font-family: verdana, geneva;">引子</span></h2>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">假设我们有如下结构：</span></p>
+                        <div class="cnblogs_Highlighter sh-gutter">
+                            <div><div id="highlighter_451610" class="syntaxhighlighter  html"><div class="toolbar"><span><a href="#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="html plain">&lt;</code><code class="html keyword">p</code> <code class="html plain">class="txt" style="color:red"&gt;123456789&lt;/</code><code class="html keyword">p</code><code class="html plain">&gt;</code></div></div></td></tr></tbody></table></div></div>
+                        </div>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">上面的&nbsp;<code>p</code>&nbsp;标签只有一个内联 CSS，很明显，在没有其他样式的干预下，文本&nbsp;<code>.txt</code>&nbsp;的颜色肯定就是红色的。</span></p>
+                        <p><span style="font-family: verdana, geneva;"><img src="https://img2018.cnblogs.com/blog/608782/202001/608782-20200116113816769-760192576.png" alt="" /></span></p>
+                        <p><span style="font-family: verdana, geneva;">如果此时，我们希望改变&nbsp;<code>.txt</code>&nbsp;p 标签元素的内容文字的颜色，但是不能去修改内联 CSS，只能通过样式文件去实现，像是这样：</span></p>
+                        <div class="cnblogs_Highlighter sh-gutter">
+                            <div><div id="highlighter_728225" class="syntaxhighlighter  css"><div class="toolbar"><span><a href="#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="css plain">.txt {</code></div><div class="line number2 index1 alt1"><code class="css spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="css keyword">color</code><code class="css plain">: </code><code class="css value">green</code><code class="css plain">;</code></div><div class="line number3 index2 alt2"><code class="css plain">}</code></div></div></td></tr></tbody></table></div></div>
+                        </div>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">嗯。稍微对 CSS 有点了解的同学都会知道，上面的 CSS 文件设置的样式不会生效，因为内联样式比上述 CSS 中的样式优先级要更高。</span></p>
+                        <blockquote>
+                            <p><span style="font-size: 14px; font-family: verdana, geneva;">上述这种说法不是很严谨，下文会细说。</span></p>
+                        </blockquote>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">OK，有同学就会说了，这简单，在 CSS 样式文件中添加&nbsp;<code>!important</code>&nbsp;后缀即可 。像是这样：</span></p>
+                        <div class="cnblogs_Highlighter sh-gutter">
+                            <div><div id="highlighter_991467" class="syntaxhighlighter  css"><div class="toolbar"><span><a href="#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="css plain">.txt {</code></div><div class="line number2 index1 alt1"><code class="css spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="css keyword">color</code><code class="css plain">: </code><code class="css value">green</code><code class="css color3">!important</code><code class="css plain">;</code></div><div class="line number3 index2 alt2"><code class="css plain">}</code></div></div></td></tr></tbody></table></div></div>
+                        </div>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">如此操作之后，文本的颜色确实变成了绿色，因为在 CSS 文件中带&nbsp;<code>!important</code>&nbsp;后缀的规则优先级大于内联样式中同个但不带&nbsp;<code>!important</code>&nbsp;的样式。</span></p>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;"><img src="https://img2018.cnblogs.com/blog/608782/202001/608782-20200116113851111-712282145.png" alt="" /></span></p>
+                        <p>&nbsp;<span style="font-size: 12px;">&nbsp;</span></p>
+                        <h2><span style="font-size: 18pt; font-family: verdana, geneva;">内联样式的 !important 与样式表中的 !important</span></h2>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">问题来了。</span></p>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">如果在内联样式中，我们也给加上&nbsp;<code>!important</code>&nbsp;会怎么样呢？</span></p>
+                        <div class="highlight highlight-text-html-basic">
+                            <div class="cnblogs_Highlighter sh-gutter">
+                                <div><div id="highlighter_278900" class="syntaxhighlighter  html"><div class="toolbar"><span><a href="#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="html plain">&lt;</code><code class="html keyword">p</code> <code class="html plain">class="txt" style="color:red!important"&gt;123456789&lt;/</code><code class="html keyword">p</code><code class="html plain">&gt;　</code></div></div></td></tr></tbody></table></div></div>
+                            </div>
+                            <div class="cnblogs_Highlighter sh-gutter">
+                                <div><div id="highlighter_950303" class="syntaxhighlighter  css"><div class="toolbar"><span><a href="#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="css plain">.txt {</code></div><div class="line number2 index1 alt1"><code class="css spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="css keyword">color</code><code class="css plain">: </code><code class="css value">green</code><code class="css color3">!important</code><code class="css plain">;</code></div><div class="line number3 index2 alt2"><code class="css plain">}</code></div></div></td></tr></tbody></table></div></div>
+                            </div>
+                        </div>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">此时，内联的&nbsp;<code>!important</code>&nbsp;优先级更高，文本表现为红色。</span></p>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">问题又来了，那如果此时我们无法修改内联样式，只能修改样式表，有办法能覆盖内掉内联的&nbsp;<code>!important</code>&nbsp;吗？</span></p>
+                        <p><span style="font-size: 12px; font-family: verdana, geneva;">&nbsp;</span></p>
+                        <h2><span style="font-size: 18pt; font-family: verdana, geneva;">animtion 的威力（Chromium 内核）</span></h2>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">哦吼，还真有一种看似是奇技淫巧，实则不是的方法。让我们康康：</span></p>
+                        <div class="highlight highlight-text-html-basic">
+                            <div class="cnblogs_Highlighter sh-gutter">
+                                <div><div id="highlighter_903521" class="syntaxhighlighter  html"><div class="toolbar"><span><a href="#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="html plain">&lt;</code><code class="html keyword">p</code> <code class="html plain">class="txt" style="color:red!important"&gt;123456789&lt;/</code><code class="html keyword">p</code><code class="html plain">&gt;</code></div></div></td></tr></tbody></table></div></div>
+                            </div>
+                        </div>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">我们给&nbsp;<code>.txt</code>&nbsp;p 元素新增一个动画，改变它的颜色。</span></p>
+                        <div class="cnblogs_Highlighter sh-gutter">
+                            <div><div id="highlighter_564265" class="syntaxhighlighter  css"><div class="toolbar"><span><a href="#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="css plain">.txt {</code></div><div class="line number2 index1 alt1"><code class="css spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="css plain">animation: colorGreen </code><code class="css value">2</code><code class="css plain">s infinite;</code></div><div class="line number3 index2 alt2"><code class="css plain">}</code></div><div class="line number4 index3 alt1">&nbsp;</div><div class="line number5 index4 alt2"><code class="css plain">keyframes colorGreen {</code></div><div class="line number6 index5 alt1"><code class="css spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="css value">0%</code><code class="css plain">,</code></div><div class="line number7 index6 alt2"><code class="css spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="css value">100%</code> <code class="css plain">{</code></div><div class="line number8 index7 alt1"><code class="css spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="css keyword">color</code><code class="css plain">: </code><code class="css value">green</code><code class="css plain">;</code></div><div class="line number9 index8 alt2"><code class="css spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="css plain">}</code></div><div class="line number10 index9 alt1"><code class="css plain">}</code></div></div></td></tr></tbody></table></div></div>
+                        </div>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">这里新增了一个无限循环的动画，且动画初始状态及结束状态都赋予&nbsp;<code>color: green</code>。甚至，我们都没有在规则后缀添加&nbsp;<code>!important</code>。</span></p>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">神奇的事情发生了，文本的颜色变成了绿色，成功的覆盖了内联的&nbsp;<code>&lt;p class="txt" style="color:red!important"&gt;</code>&nbsp;的红色样式。</span></p>
+                        <p><span style="font-family: verdana, geneva;"><img src="https://img2018.cnblogs.com/blog/608782/202001/608782-20200116113957284-1776529221.png" alt="" /></span></p>
+                        <p><span style="font-family: verdana, geneva;"><a href="https://codepen.io/Chokcoco/pen/PowaXjM" rel="nofollow">CodePen Demo -- the priority of CSS Animation</a></span></p>
+                        <p><span style="font-family: verdana, geneva; font-size: 12px;">&nbsp;</span></p>
+                        <h2><span style="font-size: 18pt; font-family: verdana, geneva;">常见 CSS 优先级误区</span></h2>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">严格来说也不算是误区（错误），但是这种说法不够严谨。</span></p>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">通常我们聊到 CSS 规则的优先级，第一时间都会想到这个表，也就是给不同的 CSS 规则赋予不同的权重：</span></p>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">一个选择器的优先级可以说是由四个部分相加 (分量)，可以认为是&nbsp;个十百千&nbsp;四位数的四个位数：</span></p>
+                        <ul>
+                            <li><span style="font-size: 14px; font-family: verdana, geneva;">千位： 如果声明在 style 的属性（内联样式）则该位得一分。这样的声明没有选择器，所以它得分总是1000</span></li>
+                            <li><span style="font-size: 14px; font-family: verdana, geneva;">百位： 选择器中包含ID选择器则该位得一分</span></li>
+                            <li><span style="font-size: 14px; font-family: verdana, geneva;">十位： 选择器中包含类选择器、属性选择器或者伪类则该位得一分</span></li>
+                            <li><span style="font-size: 14px; font-family: verdana, geneva;">个位：选择器中包含元素、伪元素选择器则该位得一分</span></li>
+                        </ul>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">总的来说是规则是：</span></p>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">内联 &gt; id 选择器 &gt; 类/属性/伪类选择器 &gt; 标签元素/伪元素</span></p>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">上面的规则没有问题的。但是，注意，这里仅仅考虑的是页面作者定义的样式的优先级。首先，它并且没有包含&nbsp;<code>!important</code>&nbsp;规则。</span></p>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">其次，对于决定一个 CSS 样式的最终表现而言，还有非常重要的另外一个概念 --&nbsp;层叠。</span></p>
+                        <p><span style="font-size: 12px; font-family: verdana, geneva;">&nbsp;</span></p>
+                        <h2><span style="font-size: 18pt; font-family: verdana, geneva;">Cascading -- 层叠</span></h2>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">层叠是 CSS 的一个基本特征，它是一个定义了如何合并来自多个源的属性值的算法。它在CSS处于核心地位，CSS的全称层叠样式表正是强调了这一点。</span></p>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">那么什么所谓的多个源又表示什么呢？下面是影响层叠的五个源：</span></p>
+                        <ul>
+                            <li>
+                                <p><span style="font-size: 14px; font-family: verdana, geneva;">浏览器会有一个基本的样式表来给任何网页设置默认样式。这些样式统称用户代理样式</span></p>
+                            </li>
+                            <li>
+                                <p><span style="font-size: 14px; font-family: verdana, geneva;">网页的作者可以定义文档的样式，这是最常见的样式表。大多数情况下此类型样式表会定义多个，它们构成网站的视觉和体验，即页面主题，可以理解为页面作者样式</span></p>
+                            </li>
+                            <li>
+                                <p><span style="font-size: 14px; font-family: verdana, geneva;">读者，作为浏览器的用户，可以使用自定义样式表定制使用体验，可以理解为用户样式</span></p>
+                            </li>
+                            <li>
+                                <p><span style="font-size: 14px; font-family: verdana, geneva;">动画（Animation），指使用&nbsp;<a class="user-mention" href="https://github.com/Keyframes" data-hovercard-type="organization" data-hovercard-url="/orgs/Keyframes/hovercard">Keyframes</a>&nbsp;规则定义状态间的动画，动画序列中定义关键帧的样式来控制CSS动画序列</span></p>
+                            </li>
+                            <li>
+                                <p><span style="font-size: 14px; font-family: verdana, geneva;">过渡 （Transition）</span></p>
+                            </li>
+                        </ul>
+                        <h3><span style="font-size: 14pt; font-family: verdana, geneva;">CSS动画与层叠（重点）</span></h3>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">CSS动画，指使用<a class="user-mention" href="https://github.com/Keyframes" data-hovercard-type="organization" data-hovercard-url="/orgs/Keyframes/hovercard">Keyframes</a>&nbsp;规则定义状态间的动画。</span></p>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">这里有个重点：关键帧不参与层叠。</span></p>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">这意味着在任何时候 CSS 都是取单一的&nbsp;<a class="user-mention" href="https://github.com/Keyframes" data-hovercard-type="organization" data-hovercard-url="/orgs/Keyframes/hovercard">Keyframes</a>&nbsp;的值而不会是某几个<a class="user-mention" href="https://github.com/Keyframe" data-hovercard-type="user" data-hovercard-url="/users/Keyframe/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self">Keyframe</a>的混合。同时仍应注意用&nbsp;<a class="user-mention" href="https://github.com/Keyframes" data-hovercard-type="organization" data-hovercard-url="/orgs/Keyframes/hovercard">Keyframes</a>（规则）定义的值会覆盖全部普通值，但会被 !important 的值覆盖</span></p>
+                        <blockquote>
+                            <p><span style="font-size: 14px; font-family: verdana, geneva;">这里我其实没弄很明白，这里的意思就是动画过程中的每一帧，决定元素的样式表现只取决于单一的&nbsp;<a class="user-mention" href="https://github.com/Keyframes" data-hovercard-type="organization" data-hovercard-url="/orgs/Keyframes/hovercard">Keyframes</a>&nbsp;的值，但是规范和 MDN 文档中都明确表明，动画&nbsp;<a class="user-mention" href="https://github.com/Keyframes" data-hovercard-type="organization" data-hovercard-url="/orgs/Keyframes/hovercard">Keyframes</a>&nbsp;中的值仍会被 !important 规则覆盖，但是实际测试结果，在 Chromium 内核下，动画&nbsp;<a class="user-mention" href="https://github.com/Keyframes" data-hovercard-type="organization" data-hovercard-url="/orgs/Keyframes/hovercard">Keyframes</a>&nbsp;中的值层叠顺序高于 !important 规则。</span></p>
+                        </blockquote>
+                        <h3><span style="font-size: 14pt; font-family: verdana, geneva;">CSS 选择器的层叠（级联）顺序</span></h3>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">上面说的常见的优先级误区，仅仅是规定了网页的作者定义的样式的优先级。除此之外，CSS 优先级还需要考虑选择器的层叠（级联）顺序。</span></p>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">只有在层叠顺序相等时，使用哪个值才取决于样式的优先级。</span></p>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">根据 CSS Cascading 4 最新标准：</span></p>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;"><a href="https://drafts.csswg.org/css-cascade-4/#cascading" rel="nofollow">CSS Cascading 4(Current Work)</a></span></p>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">定义的当前规范下申明的层叠顺序优先级如下（越往下的优先级越高，下面的规则按升序排列）：</span></p>
+                        <ul>
+                            <li><span style="font-size: 14px; font-family: verdana, geneva;">Normal user agent declarations</span></li>
+                            <li><span style="font-size: 14px; font-family: verdana, geneva;">Normal user declarations</span></li>
+                            <li><span style="font-size: 14px; font-family: verdana, geneva;">Normal author declarations</span></li>
+                            <li><span style="font-size: 14px; font-family: verdana, geneva;">Animation declarations</span></li>
+                            <li><span style="font-size: 14px; font-family: verdana, geneva;">Important author declarations</span></li>
+                            <li><span style="font-size: 14px; font-family: verdana, geneva;">Important user declarations</span></li>
+                            <li><span style="font-size: 14px; font-family: verdana, geneva;">Important user agent declarations</span></li>
+                            <li><span style="font-size: 14px; font-family: verdana, geneva;">Transition declarations</span></li>
+                        </ul>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">简单翻译一下：</span></p>
+                        <p><span style="font-family: verdana, geneva;"><img src="https://img2018.cnblogs.com/blog/608782/202001/608782-20200116114048588-1876793987.png" alt="" width="493" height="301" /></span></p>
+                        <p><span style="font-family: verdana, geneva;">按照上述算法，大概是这样：</span></p>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">过渡动画过程中每一帧的样式 &gt; 用户代理、用户、页面作者设置的!important样式 &gt; 动画过程中每一帧的样式优先级 &gt; 页面作者、用户、用户代理普通样式</span></p>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">然而，经过多个浏览器的测试，实际上并不是这样。（尴尬了）</span></p>
+                        <p><span style="font-size: 12px; font-family: verdana, geneva;">&nbsp;</span></p>
+                        <h2><span style="font-size: 18pt; font-family: verdana, geneva;">实际测试的结果</span></h2>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">实际代码测试的结果得出的结论其实是与规范中的优先级不大一致的。</span></p>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">不同内核浏览器实际表现不大一致，</span></p>
+                        <h3><span style="font-size: 14pt; font-family: verdana, geneva;">Chrome 78 / Safari 13.0.4 / Edge 44.18362 (与规范表现不一致，Chromium内核)</span></h3>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">animation 动画样式 &gt; 页面作者定义的 !important 样式 &gt; transition 过渡动画中的样式 &gt; 普通样式</span></p>
+                        <h3><span style="font-size: 14pt; font-family: verdana, geneva;">Firefox 71.0 (与规范表现一致)</span></h3>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">页面作者定义的 !important 样式 &gt; animation 动画样式 &gt; transition 过渡动画中的样式 &gt; 普通样式</span></p>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;"><a href="https://codepen.io/Chokcoco/pen/PowaXjM" rel="nofollow">CodePen Demo -- the priority of CSS Animation</a></span></p>
+                        <p><span style="font-size: 12px; font-family: verdana, geneva;">&nbsp;</span></p>
+                        <h2><span style="font-size: 18pt; font-family: verdana, geneva;">总结一下</span></h2>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">上文其实很绕，看得人很晕。简单总结一下：</span></p>
+                        <ol>
+                            <li>
+                                <p><span style="font-size: 14px; font-family: verdana, geneva;">决定一个元素的样式的最终表现，除了需要比较页面作者定义的样式的优先级之外，还需要比较样式的层叠顺序；</span></p>
+                            </li>
+                            <li>
+                                <p><span style="font-size: 14px; font-family: verdana, geneva;">层叠是 CSS 的一个基本特征，定义了如何合并来自多个源的属性值的算法，5 个决定 CSS 样式的源分别是：用户代理样式、页面作者样式、用户样式、动画、过渡；</span></p>
+                            </li>
+                            <li>
+                                <p><span style="font-size: 14px; font-family: verdana, geneva;">只有在层叠顺序相等时，元素的最终样式使用哪个值才取决于样式的优先级；</span></p>
+                            </li>
+                            <li>
+                                <p><span style="font-size: 14px; font-family: verdana, geneva;">最新规范中给出的层叠顺序优先级与实际测得的有出入，不同内核浏览器实际表现不一致。</span></p>
+                            </li>
+                        </ol>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">更多详细的关于层叠和样式优先级的概念，你可以看看下面：</span></p>
+                        <ul>
+                            <li><span style="font-size: 14px; font-family: verdana, geneva;"><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade" rel="nofollow">Introducing the CSS Cascade</a></span></li>
+                            <li><span style="font-size: 14px; font-family: verdana, geneva;"><a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Cascade_and_inheritance" rel="nofollow">Cascade and inheritance</a></span></li>
+                            <li><span style="font-size: 14px; font-family: verdana, geneva;"><a href="https://drafts.csswg.org/css-cascade-4/#cascading" rel="nofollow">css-cascade-4</a></span></li>
+                        </ul>
+                        <blockquote>
+                            <p><span style="font-size: 14px; font-family: verdana, geneva;">上述 MDN 的两份文档都是有中文版的，但是发现其中中文版有部分与英文版规范不一致，应该是后面英文版有更新，但是没有同步到中文版，遇到这种情况还是应该去读读规范，并且自己实际动手实验一下。<br /></span></p>
+
+                        </blockquote>
+                        <p><span style="font-size: 12px; font-family: verdana, geneva;">&nbsp;</span></p>
+                        <h2><span style="font-size: 18pt; font-family: verdana, geneva;">最后</span></h2>
+                        <p><span style="font-size: 14px; font-family: verdana, geneva;">上面的第四点是我自己实测所得，可能是我搞错了，或者是我理解错了，如果是我的错误希望大家帮忙指出，共同进步学习。</span></p>
+                    </div>
+                </div>
+                <div class="sidebar">
+                    @*<div class="searchform">
+                        <form id="formsearch" name="formsearch" method="post" action="">
+                            <span><input name="editbox_search" class="editbox_search" id="editbox_search" maxlength="80" value="Search our ste:" type="text" /></span>
+                            <input name="button_search" src="images/search_btn.gif" class="button_search" type="image" />
+                        </form>
+                    </div>*@
+                    @*<div class="gadget">
+                        <h2 class="star"><span>Sidebar</span> Menu</h2><div class="clr"></div>
+                        <ul class="sb_menu">
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">TemplateInfo</a></li>
+                            <li><a href="#">Style Demo</a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">Archives</a></li>
+                            <li><a href="#">Web Templates</a></li>
+                        </ul>
+                    </div>
+                    <div class="gadget">
+                        <h2 class="star"><span>Sponsors</span></h2><div class="clr"></div>
+                        <ul class="ex_menu">
+                            <li><a href="#" title="Website Templates">DreamTemplate</a><br />Over 6,000+ Premium Web Templates</li>
+                            <li><a href="#">TemplateSOLD</a><br />Premium WordPress &amp; Joomla Themes</li>
+                            <li><a href="#" title="Affordable Hosting">ImHosted.com</a><br />Affordable Web Hosting Provider</li>
+                            <li><a href="#" title="Stock Icons">MyVectorStore</a><br />Royalty Free Stock Icons</li>
+                            <li><a href="#" title="Website Builder">Evrsoft</a><br />Website Builder Software &amp; Tools</li>
+                            <li><a href="#" title="CSS Templates">CSS Hub</a><br />Premium CSS Templates</li>
+                        </ul>
+                    </div>*@
+                </div>
+                <div class="clr"></div>
+            </div>
+        </div>
+
+        @*<div class="fbg">
+            <div class="fbg_resize">
+                <div class="col c1">
+                    <h2><span>Image Gallery</span></h2>
+                    <a href="#"><img src="images/pix1.jpg" width="58" height="58" alt="pix" /></a>
+                    <a href="#"><img src="images/pix2.jpg" width="58" height="58" alt="pix" /></a>
+                    <a href="#"><img src="images/pix3.jpg" width="58" height="58" alt="pix" /></a>
+                    <a href="#"><img src="images/pix4.jpg" width="58" height="58" alt="pix" /></a>
+                    <a href="#"><img src="images/pix5.jpg" width="58" height="58" alt="pix" /></a>
+                    <a href="#"><img src="images/pix6.jpg" width="58" height="58" alt="pix" /></a>
+                </div>
+                <div class="col c2">
+                    <h2><span>Lorem Ipsum</span></h2>
+                    <p>Lorem ipsum dolor<br />Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec libero. Suspendisse bibendum. Cras id urna. Morbi tincidunt, orci ac convallis aliquam, lectus turpis varius lorem, eu posuere nunc justo tempus leo. Donec mattis, purus nec placerat bibendum, dui pede condimentum odio, ac blandit ante orci ut diam.</p>
+                </div>
+                <div class="col c3">
+                    <h2><span>Contact</span></h2>
+                    <p>Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue.</p>
+                    <p><a href="mailto:support@yoursite.com">support@yoursite.com</a></p>
+                    <p>+1 (123) 444-5677<br />+1 (123) 444-5678</p>
+                    <p>Address: 123 TemplateAccess Rd1</p>
+                </div>
+                <div class="clr"></div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="footer_resize">
+                <p class="lf">&copy; Copyright <a href="#">MyWebSite</a>. Collect from: <a href="http://www.cssmoban.com/" title="网站模板" target="_blank">网站模板</a></p>
+                <ul class="fmenu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="support.html">Support</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li class="active"><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contacts</a></li>
+                </ul>
+                <div class="clr"></div>
+            </div>
+        </div>*@
+        <div class="footer">
+            <div class="footer_resize">
+                <p class="lf">&copy; Copyright <a href="#">晓冬科技</a>. Collect from: <a href="http://www.hexiaodong.top/" title="" target="_blank">www.hexiaodong.top</a></p>
+                <ul class="fmenu">
+                    <li><a href="@Url.Action("Index")">首页</a></li>
+                    <li><a href="@Url.Action("Blog")">最新博客</a></li>
+                    <li><a href="@Url.Action("Contact")">联系我</a></li>
+                </ul>
+                <div class="clr"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
