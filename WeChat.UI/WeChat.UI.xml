@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WeChat.UI</name>
+    </assembly>
+    <members>
+        <member name="T:WeChat.UI.Controllers.PayController">
+            <summary>
+            支付管理
+            </summary>
+        </member>
+        <member name="M:WeChat.UI.Controllers.PayController.#ctor">
+            <summary>
+            ctor
+            </summary>
+        </member>
+        <member name="M:WeChat.UI.Controllers.PayController.GetPreCode">
+            <summary>
+            准备获取Code
+            </summary>
+        </member>
+        <member name="M:WeChat.UI.Controllers.PayController.GetCode(System.String,System.String)">
+            <summary>
+            获取Code
+            </summary>
+            <param name="code"></param>
+            <param name="state"></param>
+        </member>
+        <member name="M:WeChat.UI.Controllers.PayController.GetAccessToken(System.String)">
+            <summary>
+            获取access_token
+            </summary>
+            <param name="code"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WeChat.UI.Controllers.PayController.Post">
+            <summary>
+            支付
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WeChat.UI.Controllers.PayController.GetNotifyUrl">
+            <summary>
+            支付回调
+            </summary>
+        </member>
+        <member name="T:WeChat.UI.Controllers.UserController">
+            <summary>
+            用户管理
+            </summary>
+        </member>
+        <member name="M:WeChat.UI.Controllers.UserController.Get">
+            <summary>
+            获取用户列表（OpenID）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WeChat.UI.Controllers.UserController.GetInfo(System.String)">
+            <summary>
+            获取用户基本信息（OpenID）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:WeChat.UI.Models.WeChatConfig.MCH_ID">
+            <summary>
+            商户号
+            </summary>
+        </member>
+        <member name="M:WeChat.UI.Models.WeChatPayData.SetValue(System.String,System.Object)">
+                    * 设置某个字段的值
+                    * @param key 字段名
+                     * @param value 字段值
+        </member>
+        <member name="M:WeChat.UI.Models.WeChatPayData.GetValue(System.String)">
+                    * 根据字段名获取某个字段的值
+                    * @param key 字段名
+                     * @return key对应的字段值
+        </member>
+        <member name="M:WeChat.UI.Models.WeChatPayData.IsSet(System.String)">
+            判断某个字段是否已设置
+            @param key 字段名
+            @return 若字段key已被设置，则返回true，否则返回false
+        </member>
+        <member name="M:WeChat.UI.Models.WeChatPayData.ToXml">
+             @将Dictionary转成xml
+             @return 经转换得到的xml串
+             @throws WxPayException
+            
+        </member>
+        <member name="M:WeChat.UI.Models.WeChatPayData.MakeSign(System.String)">
+            @生成签名，详见签名生成算法
+            @return 签名, sign字段不参加签名
+        </member>
+        <member name="M:WeChat.UI.Models.WeChatPayData.MakeSign">
+            @生成签名，详见签名生成算法
+            @return 签名, sign字段不参加签名 SHA256
+        </member>
+        <member name="M:WeChat.UI.Models.WeChatPayData.ToUrl">
+            @Dictionary格式转化成url参数格式
+            @ return url格式串, 该串不包含sign字段值
+        </member>
+        <member name="M:WeChat.UI.Models.WeChatPayData.FromXml(System.String)">
+            @将xml转为WxPayData对象并返回对象内部的数据
+            @param string 待转换的xml串
+            @return 经转换得到的Dictionary
+            @throws WxPayException
+        </member>
+        <member name="M:WeChat.UI.Models.WeChatPayData.CheckSign(System.String)">
+            
+            检测签名是否正确
+            正确返回true，错误抛异常
+        </member>
+        <member name="M:WeChat.UI.Models.WeChatPayData.CheckSign">
+            
+            检测签名是否正确
+            正确返回true，错误抛异常
+        </member>
+        <member name="M:WeChat.UI.Models.WeChatPayData.ToJson">
+                    * @Dictionary格式化成Json
+                     * @return json串数据
+        </member>
+        <member name="M:WeChat.UI.Models.WeChatPayData.GenerateNonceStr">
+            生成随机串，随机串包含字母或数字
+            @return 随机串
+        </member>
+        <member name="M:WeChat.UI.Models.WeChatPayData.GenerateTimeStamp">
+                    * 生成时间戳，标准北京时间，时区为东八区，自1970年1月1日 0点0分0秒以来的秒数
+                     * @return 时间戳
+        </member>
+        <member name="M:WeChat.UI.RedisHelper.GetConnect">
+            <summary>
+            获取ConnectionMultiplexer
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WeChat.UI.RedisHelper.GetDatabase">
+            <summary>
+            获取数据库
+            </summary>
+            <param name="configName"></param>
+            <param name="db">默认为0：优先代码的db配置，其次config中的配置</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

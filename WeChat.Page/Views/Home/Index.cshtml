@@ -1,0 +1,72 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "Home Page";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="no-cache" http-equiv="Cache-Control">
+    <title>晓冬微信商城</title>
+    <link href="~/css/shopin.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="header">
+        <div class="left"><a href="javascript:;" class="a-back"><span>返回</span></a></div>
+        <div class="center">
+            <div class="search">
+                <form action="">
+                    <input class="s-input" type="search" autocomplete="off" placeholder="请输入搜索内容" autosave="unique">
+                    <a class="s-btn" href="javascript:;"></a>
+                </form>
+            </div>
+        </div>
+    </div><!--//头部结束-->
+
+    <div class="content">
+        <div class="list list-view">
+            <!-- larger-view -->
+            <ul>
+                <li>
+                    @*<a class="list-item" href="product.html">
+                        <div class="p"><img class="p-pic" src="http://img14.360buyimg.com/n1/jfs/t1/29911/10/13853/248637/5ca1f28dE63bd11c7/54b0789e5f108b7a.jpg"></div>
+                        <div class="d">
+                            <h3 class="d-title clamp">三只松鼠奶油味夏威夷果 坚果炒货孕妇坚果每日坚果</h3>
+                            <div class="d-main">
+                                <p class="price">
+                                    <del>￥84.00</del>
+                                    <span class="s">￥<em class="n">42</em>.00</span>
+                                </p>
+                                <p class="discount"><b>半价</b></p>
+                            </div>
+                        </div>
+                    </a>*@
+                </li>
+                <li>
+                    <a class="list-item" href="@Url.Action("Index","Product")">
+                        <div class="p"><img class="p-pic" src="http://img13.360buyimg.com/n1/jfs/t1/91175/6/8106/220047/5e01b2ebE1b2d256b/f1935c0d3ed036c7.jpg"></div>
+                        <div class="d">
+                            <h3 class="d-title clamp">三只松鼠年货坚果大礼包9袋</h3>
+                            <div class="d-main">
+                                <p class="price">
+                                    <del>￥159.00</del>
+                                    <span class="s">￥<em class="n">106</em>.00</span>
+                                </p>
+                                <p class="discount"><b>6折</b></p>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script src="~/js/zepto.min.js"></script>
+    <script src="~/js/shopin.js"></script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="no-cache" http-equiv="Cache-Control">
+    <title>晓冬微信商城</title>
+    <link href="~/css/shopin.css" rel="stylesheet" />
+    <link href="~/css/swiper.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="m-detail">
+        <div class="slide-banner">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="http://img13.360buyimg.com/n1/jfs/t1/91175/6/8106/220047/5e01b2ebE1b2d256b/f1935c0d3ed036c7.jpg"></div>
+            </div>
+            <div class="swiper-pagination"></div>
+            <a href="javascript:;" class="a-back"></a>
+            <a href="javascript:;" class="a-cart"></a>
+        </div><!-- //焦点图结束 -->
+
+        <div class="d">
+            <h3 class="d-title clamp">三只松鼠年货坚果大礼包9袋</h3>
+            <div class="d-main flex">
+                <p class="price cell">
+                    <del>￥159.00</del>
+                    <span class="s">￥<em class="n">0.01</em></span>
+                </p>
+                <p class="discount"><b>测试商品</b></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="buy-bar buy-fixed flex">
+        <a class="buy-now cell" href="javascript:anthorize();">授权</a>
+        <a class="buy-now cell" href="javascript:buyNow();">立即购买</a>
+    </div>
+    <script src="~/js/jquery-1.3.2.min.js"></script>
+    @*<script src="~/lib/jquery/dist/jquery.js"></script>*@
+    @*<script src="~/js/zepto.min.js"></script>
+        <script src="~/js/swiper.js"></script>
+        <script src="~/js/shopin.js"></script>*@
+    <script>
+        ////焦点图
+        //var mySwiper = new Swiper('.slide-banner', {
+        //    pagination: '.swiper-pagination',
+        //    autoplay: 3000,
+        //    autoplayDisableOnInteraction: false
+        //});
+        //立即购买
+        function getParams(key) {
+            let search = window.location.search.replace(/^\?/, "");
+            let pairs = search.split("&");
+            let paramsMap = pairs.map(pair => {
+                let [key, value] = pair.split("=");
+                return [decodeURIComponent(key), decodeURIComponent(value)];
+            }).reduce((res, [key, value]) => Object.assign(res, { [key]: value }), {});
+            return paramsMap[key] || "";
+        }
+        //$(function () {
+        //    if (getParams('code') != '' && getParams('code') != null)
+        //        //alert('回调中code为：' + getParams('code'));
+        //    else
+        //        //alert('暂时没code');
+        //});
+        function anthorize() {
+            alert('开始授权');
+            window.location.href = 'http://hexiaodong.top/api/pay/pre_code';
+        }
+        function buyNow() {
+            //alert('开始微信支付');
+            if (getParams('code') != '' && getParams('code') != null) {
+                alert('真的开始支付了...');
+                $.get('http://hexiaodong.top/api/pay/unifiedorder?code=' + getParams('code'), function (result) {
+                    //alert('回调数据...' + result);
+                    result = JSON.parse(result);
+                    appId = result.appId;
+                    //alert('回调中的appid为：' + appId);
+                    timeStamp = result.timeStamp;
+                    nonceStr = result.nonceStr;
+                    package = result.package;
+                    signType = result.signType;
+                    paySign = result.paySign;
+                    if (typeof WeixinJSBridge == "undefined") {
+                        if (document.addEventListener) {
+                            document.addEventListener('WeixinJSBridgeReady',
+                                onBridgeReady, false);
+                        } else if (document.attachEvent) {
+                            document.attachEvent('WeixinJSBridgeReady',
+                                onBridgeReady);
+                            document.attachEvent('onWeixinJSBridgeReady',
+                                onBridgeReady);
+                        }
+                    } else {
+                        onBridgeReady();
+                    }
+                });
+            }
+
+            //$.ajax({
+            //    url: 'http://hexiaodong.top/api/pay/pre_code',
+            //    success: function (result) {
+            //        alert('回调数据' + result);
+            //        if (result == null || result == '') {
+            //            alert('直接返回');
+            //            return;
+            //        }
+            //        $.get('http://hexiaodong.top/api/pay/unifiedorder', function (result) {
+            //            alert('回调数据...' + result);
+            //            result = JSON.parse(result);
+            //            appId = result.appId;
+            //            alert('回调中的appid为：' + appId);
+            //            timeStamp = result.timeStamp;
+            //            nonceStr = result.nonceStr;
+            //            package = result.package;
+            //            signType = result.signType;
+            //            paySign = result.paySign;
+            //            if (typeof WeixinJSBridge == "undefined") {
+            //                if (document.addEventListener) {
+            //                    document.addEventListener('WeixinJSBridgeReady',
+            //                        onBridgeReady, false);
+            //                } else if (document.attachEvent) {
+            //                    document.attachEvent('WeixinJSBridgeReady',
+            //                        onBridgeReady);
+            //                    document.attachEvent('onWeixinJSBridgeReady',
+            //                        onBridgeReady);
+            //                }
+            //            } else {
+            //                onBridgeReady();
+            //            }
+            //        });
+            //    },
+            //    error: function (err) {
+            //        alert('错误');
+            //        $.get('http://hexiaodong.top/api/log?data=' + err, function (result) {
+            //            alert('日志已记录' + result);
+            //        });
+            //    }
+            //});
+        }
+        function onBridgeReady() {
+            alert('appid为：' + appId);
+            WeixinJSBridge.invoke('getBrandWCPayRequest', {
+                "appId": appId,     //公众号名称,由商户传入
+                "timeStamp": timeStamp,         //时间戳,自1970年以来的秒数
+                "nonceStr": nonceStr, //随机串
+                "package": package,
+                "signType": signType,         //微信签名方式：
+                "paySign": paySign //微信签名
+            },
+                function (res) {
+                    alert('res=:' + res);
+                    if (res.err_msg == "get_brand_wcpay_request:ok") {
+                        console.log('支付成功');
+                        //支付成功后跳转的页面
+                    } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
+                        console.log('支付取消');
+                    } else if (res.err_msg == "get_brand_wcpay_request:fail") {
+                        console.log('支付失败');
+                        WeixinJSBridge.call('closeWindow');
+                    } //使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok,但并不保证它绝对可靠。
+                });
+        }
+    </script>
+</body>
+</html>
