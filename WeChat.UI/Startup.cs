@@ -43,33 +43,33 @@ namespace WeChat.UI
             //    //Redis实例名RedisDistributedCache
             //    options.InstanceName = "RedisDistributedCache";
             //});
-            services.AddSingleton(new RedisHelper("175.24.32.233:6379", ""));
+            //services.AddSingleton(new RedisHelper("175.24.32.233:6379", ""));
             services.Configure<KestrelServerOptions>(options => options.AllowSynchronousIO = true);
             services.AddLogging();
             services.AddControllersWithViews();
-            #region Swagger
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Version = "v0.1.1",
-                    Title = "WeChat API",
-                    Description = "微信接口说明文档",
-                    TermsOfService = new Uri("http://www.baidu.com/"),
-                    Contact = new OpenApiContact
-                    {
-                        Email = "675556820@qq.com",
-                        Name = "hexiaodond.top",
-                        Url = new Uri("http://www.hexiaodong.top"),
-                        Extensions = null
-                    }
-                });
-                var basePath = AppContext.BaseDirectory;
-                var xmlPath = Path.Combine(basePath, "WeChat.UI.xml");//这个就是刚刚配置的xml文件名
-                c.IncludeXmlComments(xmlPath, true);
-            });
+            //#region Swagger
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new OpenApiInfo
+            //    {
+            //        Version = "v0.1.1",
+            //        Title = "WeChat API",
+            //        Description = "微信接口说明文档",
+            //        TermsOfService = new Uri("http://www.baidu.com/"),
+            //        Contact = new OpenApiContact
+            //        {
+            //            Email = "675556820@qq.com",
+            //            Name = "hexiaodond.top",
+            //            Url = new Uri("http://www.hexiaodong.top"),
+            //            Extensions = null
+            //        }
+            //    });
+            //    var basePath = AppContext.BaseDirectory;
+            //    var xmlPath = Path.Combine(basePath, "WeChat.UI.xml");//这个就是刚刚配置的xml文件名
+            //    c.IncludeXmlComments(xmlPath, true);
+            //});
 
-            #endregion
+            //#endregion
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -77,11 +77,11 @@ namespace WeChat.UI
             //app.UseOptions(); // 在方法最开始的位置加，其他位置没测试。
             app.UseDeveloperExceptionPage();
             #region Swagger
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiHelp V1");
-            });
+            //app.UseSwagger();
+            //app.UseSwaggerUI(c =>
+            //{
+            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiHelp V1");
+            //});
             #endregion
 
             app.UseStaticFiles();
